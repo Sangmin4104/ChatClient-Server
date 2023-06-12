@@ -393,14 +393,19 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
             ImageIcon img = new ImageIcon("src/img.png");
             img = imageSetSize(img, 10, 10);
+            ImageIcon img1 = new ImageIcon("src/img_3.png");
+            img1 = imageSetSize(img1, 10, 10);
             textArea.setText(Objects.toString(value, ""));
             System.out.println(value);
             this.targetIndex = index;
-            if(index == 0){
-                Optional<Boolean> optional = Optional.ofNullable(this.userMap.get(model.get(index).toString()));
+            if(userMap.containsKey(Objects.toString(value, ""))){
+                Optional<Boolean> optional = Optional.ofNullable(this.userMap.get(Objects.toString(value, "")));
                 if (optional.isPresent()){
                     if(optional.get()){
                         textArea.setIcon(img);
+                    }
+                    else{
+                        textArea.setIcon(img1);
                     }
                 }
             }
