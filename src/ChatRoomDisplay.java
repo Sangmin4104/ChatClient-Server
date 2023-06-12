@@ -369,16 +369,15 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
 //            textArea.setLineWrap(true);
             textArea.setOpaque(false);
             renderer.add(textArea);
-
             deleteButton.addActionListener(e -> {
                 boolean oneOrMore = model.getSize() > 1;
                 if (oneOrMore) {
-
                     cr_thread.requestChatBan(model.get(targetIndex).toString());
                 }
             });
+
             if (isAdmin){
-                ImageIcon img = new ImageIcon("src/img_1.png");
+                ImageIcon img = new ImageIcon("img_1.png");
                 img = imageSetSize(img, 20, 20);
                 deleteButton.setIcon(img);
                 deleteButton.setFocusable(false);
@@ -391,13 +390,14 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         }
 
         @Override public Component getListCellRendererComponent(JList<? extends E> list, E value, int index, boolean isSelected, boolean cellHasFocus) {
-            ImageIcon img = new ImageIcon("src/img.png");
+            ImageIcon img = new ImageIcon("img.png");
             img = imageSetSize(img, 10, 10);
-            ImageIcon img1 = new ImageIcon("src/img_3.png");
+            ImageIcon img1 = new ImageIcon("img_3.png");
             img1 = imageSetSize(img1, 10, 10);
             textArea.setText(Objects.toString(value, ""));
             System.out.println(value);
             this.targetIndex = index;
+
             if(userMap.containsKey(Objects.toString(value, ""))){
                 Optional<Boolean> optional = Optional.ofNullable(this.userMap.get(Objects.toString(value, "")));
                 if (optional.isPresent()){
