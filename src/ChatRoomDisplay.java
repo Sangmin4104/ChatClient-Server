@@ -358,6 +358,8 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         protected int rolloverIndex = -1;
         protected JButton button;
         private boolean isAdmin;
+
+        private String idStr;
         public HashMap<String, Boolean> userMap;
         public DefaultListModel<E> model;
         protected ButtonsRenderer(DefaultListModel<E> model, HashMap userMap, boolean isAdmin) {
@@ -369,12 +371,8 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
 //            textArea.setLineWrap(true);
             textArea.setOpaque(false);
             renderer.add(textArea);
-            deleteButton.addActionListener(e -> {
-                boolean oneOrMore = model.getSize() > 1;
-                if (oneOrMore) {
-                    cr_thread.requestChatBan(model.get(targetIndex).toString());
-                }
-            });
+
+
 
             if (isAdmin){
                 ImageIcon img = new ImageIcon("img_1.png");
@@ -384,7 +382,14 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
                 deleteButton.setRolloverEnabled(false);
 
                 renderer.add(deleteButton, BorderLayout.EAST);
+                deleteButton.addActionListener(e -> {
 
+                    boolean oneOrMore = model.getSize() > 1;
+
+                    if (oneOrMore) {
+                        cr_thread.requestChatBan(model.get(targetIndex).toString());
+                    }
+                });
             }
 
         }
@@ -397,7 +402,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
             textArea.setText(Objects.toString(value, ""));
             System.out.println(value);
             this.targetIndex = index;
-
+            this.idStr = Objects.toString(value,"");
             if(userMap.containsKey(Objects.toString(value, ""))){
                 Optional<Boolean> optional = Optional.ofNullable(this.userMap.get(Objects.toString(value, "")));
                 if (optional.isPresent()){

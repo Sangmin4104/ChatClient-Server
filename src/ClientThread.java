@@ -456,7 +456,6 @@ public class ClientThread extends Thread
                     case YES_CHATBAN: {
                         String id = st.nextToken();
                         int roomNumber = Integer.parseInt(st.nextToken());
-                        this.ct_chatRoom.messages.append(id + "님이 채팅 금지를 당하셨습니다\n");
                         try {
 
                             if (id.equals(this.ct_logonID)) {
@@ -467,7 +466,6 @@ public class ClientThread extends Thread
                                 TimerTask task = new TimerTask() {
                                     @Override
                                     public void run() {
-                                        ct_chatRoom.messages.append(id + "님의 채팅 금지가 해제되었습니다\n");
                                         ct_chatRoom.message.setText("");
                                         ct_chatRoom.message.setEnabled(true);
                                     }
@@ -479,7 +477,6 @@ public class ClientThread extends Thread
                                 TimerTask task = new TimerTask() {
                                     @Override
                                     public void run() {
-                                        ct_chatRoom.messages.append(id + "님의 채팅 금지가 해제되었습니다\n");
                                     }
                                 };
                                 timer.schedule(task, 5000);
