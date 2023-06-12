@@ -344,7 +344,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
     class ButtonsRenderer<E> implements ListCellRenderer<E> {
         private  final Color EVEN_COLOR = new Color(0xE6_FF_E6);
         private final JLabel textArea = new JLabel();
-        private final JButton deleteButton = new JButton();
+        private final JButton chatBan = new JButton();
 
         private final JPanel renderer = new JPanel(new BorderLayout()) { // *1
             @Override public Dimension getPreferredSize() {
@@ -377,12 +377,12 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
             if (isAdmin){
                 ImageIcon img = new ImageIcon("img_1.png");
                 img = imageSetSize(img, 20, 20);
-                deleteButton.setIcon(img);
-                deleteButton.setFocusable(false);
-                deleteButton.setRolloverEnabled(false);
+                chatBan.setIcon(img);
+                chatBan.setFocusable(false);
+                chatBan.setRolloverEnabled(false);
 
-                renderer.add(deleteButton, BorderLayout.EAST);
-                deleteButton.addActionListener(e -> {
+                renderer.add(chatBan, BorderLayout.EAST);
+                chatBan.addActionListener(e -> {
 
                     boolean oneOrMore = model.getSize() > 1;
 
@@ -423,6 +423,8 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
                 renderer.setBackground(index % 2 == 0 ? EVEN_COLOR : list.getBackground());
                 textArea.setForeground(list.getForeground());
             }
+
+            resetButtonStatus(chatBan);
             if (Objects.nonNull(button)) {
                 if (index == pressedIndex) {
                     button.getModel().setSelected(true);
