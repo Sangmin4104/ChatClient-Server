@@ -33,7 +33,7 @@ public class ClientThread extends Thread
     private static final int REQ_SENDWORDTO = 1052;
     private static final int REQ_COERCEOUT = 1053;
     private static final int REQ_SENDFILE = 1061;
-    private static final int REQ_NOCHAT = 1071;
+    private static final int REQ_CHATBAN = 1071;//채팅금지
     private static final int REQ_POPMESSAGE = 1081; // 펑메시지
     private static final int YES_LOGON = 2001;
     private static final int NO_LOGON = 2002;
@@ -49,8 +49,8 @@ public class ClientThread extends Thread
     private static final int YES_COERCEOUT = 2054;
     private static final int YES_SENDFILE = 2061;
     private static final int NO_SENDFILE = 2062;
-    private static final int YES_NOCAHT = 2071; // 채금 성공
-    private static final int NO_NOCAHT = 2072; // 채금 실패
+    private static final int YES_CHATBAN = 2071;
+    private static final int NO_CHATBAN = 2072;
     private static final int YES_POPMESSAGE = 2081; // 펑메시지 성공
     private static final int NO_POPMESSAGE = 2082; // 펑메시지 실패
     private static final int MDY_WAITUSER = 2003;
@@ -230,7 +230,9 @@ public class ClientThread extends Thread
                         while(st1.hasMoreTokens()){
                             user.addElement(st1.nextToken());
                         }
-                        ct_chatRoom.roomerInfo.setListData(user);
+
+                        this.ct_chatRoom.roomerInfo.setListData(user);
+                        this.ct_chatRoom.CheckAdmin(user);
                         if (code == 1) {
                             ct_chatRoom.messages.append("### " + id + "님이 입장하셨습니다. ###\n");
                         } else if (code == 2) {
@@ -372,6 +374,7 @@ public class ClientThread extends Thread
                         }
                         break;
                     }
+
                     case REQ_SENDFILE : {
                         String id = st.nextToken();
                         int roomNumber = Integer.parseInt(st.nextToken());
@@ -450,6 +453,50 @@ public class ClientThread extends Thread
                         new SendFile(addr);
                         break;
                     }
+                    case YES_CHATBAN: {
+                        String id = st.nextToken();
+                        int roomNumber = Integer.parseInt(st.nextToken());
+                        this.ct_chatRoom.messages.append(id + "님이 채팅 금지를 당하셨습니다\n");
+                        try {
+
+                            if (id.equals(this.ct_logonID)) {
+
+                                this.ct_chatRoom.message.setText("채팅 금지");
+                                this.ct_chatRoom.message.setEnabled(false);
+                                Timer timer = new Timer();
+                                TimerTask task = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        ct_chatRoom.messages.append(id + "님의 채팅 금지가 해제되었습니다\n");
+                                        ct_chatRoom.message.setText("");
+                                        ct_chatRoom.message.setEnabled(true);
+                                    }
+                                };
+                                timer.schedule(task, 5000);
+
+                            } else {
+                                Timer timer = new Timer();
+                                TimerTask task = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        ct_chatRoom.messages.append(id + "님의 채팅 금지가 해제되었습니다\n");
+                                    }
+                                };
+                                timer.schedule(task, 5000);
+
+                            }
+                            this.ct_chatRoom.message.requestFocusInWindow();
+
+                        } catch (NoSuchElementException var16) {
+                            this.ct_chatRoom.message.requestFocusInWindow();
+                        }
+                        System.out.println("채팅금지");
+                        break;
+                    }
+                    case NO_CHATBAN: {
+                        System.out.println("채팅금지 실패");
+                        break;
+                    }
                     case YES_COERCEOUT : {
                         ct_chatRoom.hide();
                         ct_waitRoom.show();
@@ -505,7 +552,19 @@ public class ClientThread extends Thread
             System.out.println(e);
         }
     }
-
+    public void requestChatBan(String var1){
+        try {
+            this.ct_buffer.setLength(0);
+            this.ct_buffer.append(REQ_CHATBAN);
+            this.ct_buffer.append("|");
+            this.ct_buffer.append(this.ct_roomNumber);
+            this.ct_buffer.append("|");
+            this.ct_buffer.append(var1);
+            this.send(this.ct_buffer.toString());
+        } catch (IOException var3) {
+            System.out.println(var3);
+        }
+    }
     public void requestEnterRoom(int roomNumber, String password){
         try{
             ct_buffer.setLength(0);

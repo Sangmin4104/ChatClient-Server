@@ -24,7 +24,7 @@ public class ServerThread extends Thread
     private static final int REQ_SENDWORDTO = 1052;
     private static final int REQ_COERCEOUT = 1053;
     private static final int REQ_SENDFILE = 1061;
-    private static final int REQ_NOCHAT = 1071;
+    private static final int REQ_CHATBAN = 1071;
     private static final int REQ_POPMESSAGE = 1081;
     private static final int YES_LOGON = 2001;
     private static final int NO_LOGON = 2002;
@@ -40,8 +40,8 @@ public class ServerThread extends Thread
     private static final int YES_COERCEOUT = 2054;
     private static final int YES_SENDFILE = 2061;
     private static final int NO_SENDFILE = 2062;
-    private static final int YES_NOCAHT = 2071;
-    private static final int NO_NOCAHT = 2072;
+    private static final int YES_CAHTBAN = 2071;
+    private static final int NO_CAHTBAN = 2072;
     private static final int YES_POPMESSAGE = 2081;
     private static final int NO_POPMESSAGE = 2082;
     private static final int MDY_WAITUSER = 2003;
@@ -336,6 +336,34 @@ public class ServerThread extends Thread
                             send(st_buffer.toString());
                             break;
                         }
+                    }
+                    case REQ_CHATBAN: {
+                        int roomNumber = Integer.parseInt(st.nextToken());
+                        String id = st.nextToken();
+                        Hashtable room = this.st_waitRoom.getClients(roomNumber);
+                        ServerThread client = null;
+                        if ((client = (ServerThread)room.get(id)) != null) {
+                            this.st_buffer.setLength(0);
+                            this.st_buffer.append(YES_CAHTBAN);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(id);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(this.st_roomNumber);
+
+
+//                            var8.send(this.st_buffer.toString());
+//                            this.send(this.st_buffer.toString());
+                            this.broadcast(this.st_buffer.toString(), roomNumber);
+                        } else {
+                            this.st_buffer.setLength(0);
+                            this.st_buffer.append(NO_CAHTBAN);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(id);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(this.st_roomNumber);
+                            this.send(this.st_buffer.toString());
+                        }
+                        break;
                     }
                     case REQ_SENDFILE : {
                         String id = st.nextToken();
