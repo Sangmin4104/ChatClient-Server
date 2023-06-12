@@ -1,4 +1,3 @@
-
 ### Example user template template
 ### Example user template
 
@@ -7,14 +6,4 @@
 *.iml
 out
 gen
-.gradle
-build### Example user template template
-### Example user template
-
-# IntelliJ project files
-.idea
-*.iml
-out
-gen
-.gradle
-build
+src
