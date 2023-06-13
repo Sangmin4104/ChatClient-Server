@@ -36,7 +36,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
 
         JPanel p = new JPanel();
         p.setLayout(null);
-        p.setBounds(425, 10, 140, 155);
+        p.setBounds(425, 10, 170, 155);
         p.setBorder(new TitledBorder(
                 new EtchedBorder(EtchedBorder.LOWERED), "참여자"));
 
@@ -45,7 +45,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         roomerInfo.setFont(font);
         JScrollPane jsp2 = new JScrollPane(roomerInfo);
         roomerInfo.addListSelectionListener(this);
-        jsp2.setBounds(15, 25, 110, 105);
+        jsp2.setBounds(15, 25, 140, 105);
         p.add(jsp2);
 
         c.add(p);
