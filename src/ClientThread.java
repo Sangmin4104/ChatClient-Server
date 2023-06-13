@@ -462,6 +462,7 @@ public class ClientThread extends Thread
                         if (id.equals(this.ct_logonID)) {
                             this.ct_chatRoom.isAdmin =true;
                             if(this.ct_chatRoom.isAdmin){
+                                this.ct_chatRoom.CheckAdmin(this.ct_chatRoom.users);
                                 System.out.println("내가 방장이다 이새끼야:"+id);
                             }
                         }

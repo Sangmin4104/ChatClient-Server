@@ -17,7 +17,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
 
     private JLabel roomer;
     public JList roomerInfo;
-    private JButton coerceOut, PopMassage, sendWord, sendFile, quitRoom;
+    private JButton coerceOut, PopMassage, sendWord, sendFile, quitRoom, passAdmin;
     private Font font;
     private JViewport view;
     private JScrollPane jsp3;
@@ -75,6 +75,13 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         p.add(message);
 
         c.add(p);
+
+        passAdmin = new JButton("방장위임");
+        passAdmin.setFont(font);
+        passAdmin.addActionListener(this);
+        passAdmin.setBounds(445, 155, 100, 30);
+        passAdmin.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
+        c.add(passAdmin);
 
         coerceOut = new JButton("강 제 퇴 장");
         coerceOut.setFont(font);
@@ -207,7 +214,20 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
                 cr_thread.requestPopMessage(msg);
             }
 
-        }else if (ae.getSource() == quitRoom) {
+        } else if (ae.getSource() == passAdmin) {
+            if (!isAdmin) {
+                JOptionPane.showMessageDialog(this, "당신은 방장이 아닙니다.",
+                        "방장위임", JOptionPane.ERROR_MESSAGE);
+            } else if (!isSelected) {
+                JOptionPane.showMessageDialog(this, "방장위임 ID를 선택하세요.",
+                        "방장위임", JOptionPane.ERROR_MESSAGE);
+            } else {
+                cr_thread.requestPassAdmin(idTo);
+                isSelected = false;
+                this.isAdmin = false;
+                this.CheckAdmin(users);
+            }
+        } else if (ae.getSource() == quitRoom) {
             if (this.isAdmin && users.size() > 1){
                 cr_thread.requestPassAdmin(users.get(1));
             }
