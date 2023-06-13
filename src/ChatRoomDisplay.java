@@ -10,6 +10,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         ListSelectionListener, ChangeListener
 {
     private ClientThread cr_thread;
+    public Vector<String> users;
     private String idTo;
     private boolean isSelected;
     public boolean isAdmin;
@@ -207,7 +208,11 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
             }
 
         }else if (ae.getSource() == quitRoom) {
+            if (this.isAdmin && users.size() > 1){
+                cr_thread.requestPassAdmin(users.get(1));
+            }
             cr_thread.requestQuitRoom();
+
         } else if (ae.getSource() == sendWord) {
             String idTo, data;
             if ((idTo = JOptionPane.showInputDialog("아이디를 입력하세요.")) != null){
