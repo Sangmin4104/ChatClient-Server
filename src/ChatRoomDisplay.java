@@ -79,42 +79,42 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         passAdmin = new JButton("방장위임");
         passAdmin.setFont(font);
         passAdmin.addActionListener(this);
-        passAdmin.setBounds(445, 155, 100, 30);
+        passAdmin.setBounds(445, 170, 100, 30);
         passAdmin.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
         c.add(passAdmin);
 
         coerceOut = new JButton("강 제 퇴 장");
         coerceOut.setFont(font);
         coerceOut.addActionListener(this);
-        coerceOut.setBounds(445, 170, 100, 30);
+        coerceOut.setBounds(445, 200, 100, 30);
         coerceOut.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
         c.add(coerceOut);
 
         PopMassage = new JButton("펑 메 시 지");
         PopMassage.setFont(font);
         PopMassage.addActionListener(this);
-        PopMassage.setBounds(445, 205, 100, 30);
+        PopMassage.setBounds(445, 230, 100, 30);
         PopMassage.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
         c.add(PopMassage);
 
         sendWord = new JButton("귓말보내기");
         sendWord.setFont(font);
         sendWord.addActionListener(this);
-        sendWord.setBounds(445, 240, 100, 30);
+        sendWord.setBounds(445, 260, 100, 30);
         sendWord.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
         c.add(sendWord);
 
         sendFile = new JButton("파 일 전 송");
         sendFile.setFont(font);
         sendFile.addActionListener(this);
-        sendFile.setBounds(445, 275, 100, 30);
+        sendFile.setBounds(445, 290, 100, 30);
         sendFile.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
         c.add(sendFile);
 
         quitRoom = new JButton("퇴 실 하 기");
         quitRoom.setFont(font);
         quitRoom.addActionListener(this);
-        quitRoom.setBounds(445, 310, 100, 30);
+        quitRoom.setBounds(445, 320, 100, 30);
         quitRoom.setBorder(new SoftBevelBorder(SoftBevelBorder.RAISED));
         c.add(quitRoom);
 
