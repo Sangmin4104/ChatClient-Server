@@ -9,7 +9,6 @@ import javax.swing.border.*;
 class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         ListSelectionListener, ChangeListener
 {
-    public Vector<String> users = new Vector<>();
     private ClientThread cr_thread;
     private String idTo;
     private boolean isSelected;
@@ -37,7 +36,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
 
         JPanel p = new JPanel();
         p.setLayout(null);
-        p.setBounds(425, 10, 150, 155);
+        p.setBounds(425, 10, 140, 155);
         p.setBorder(new TitledBorder(
                 new EtchedBorder(EtchedBorder.LOWERED), "참여자"));
 
@@ -46,7 +45,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
         roomerInfo.setFont(font);
         JScrollPane jsp2 = new JScrollPane(roomerInfo);
         roomerInfo.addListSelectionListener(this);
-        jsp2.setBounds(15, 25, 120, 105);
+        jsp2.setBounds(15, 25, 110, 105);
         p.add(jsp2);
 
         c.add(p);
@@ -208,12 +207,7 @@ class ChatRoomDisplay extends JFrame implements ActionListener, KeyListener,
             }
 
         }else if (ae.getSource() == quitRoom) {
-            if (this.isAdmin && users.size() > 1){
-                cr_thread.requestPassAdmin(users.get(1));
-            }
             cr_thread.requestQuitRoom();
-
-
         } else if (ae.getSource() == sendWord) {
             String idTo, data;
             if ((idTo = JOptionPane.showInputDialog("아이디를 입력하세요.")) != null){
