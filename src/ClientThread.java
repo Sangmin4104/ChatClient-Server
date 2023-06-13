@@ -35,6 +35,7 @@ public class ClientThread extends Thread
     private static final int REQ_SENDFILE = 1061;
     private static final int REQ_CHATBAN = 1071;//채팅금지
     private static final int REQ_POPMESSAGE = 1081; // 펑메시지
+    private static final int REQ_PASSADMIN = 1091;
     private static final int YES_LOGON = 2001;
     private static final int NO_LOGON = 2002;
     private static final int YES_CREATEROOM = 2011;
@@ -53,6 +54,7 @@ public class ClientThread extends Thread
     private static final int NO_CHATBAN = 2072;
     private static final int YES_POPMESSAGE = 2081; // 펑메시지 성공
     private static final int NO_POPMESSAGE = 2082; // 펑메시지 실패
+    private static final int YES_PASSADMIN = 2091;
     private static final int MDY_WAITUSER = 2003;
     private static final int MDY_WAITINFO = 2013;
     private static final int MDY_ROOMUSER = 2023;
@@ -232,6 +234,7 @@ public class ClientThread extends Thread
                         }
 
                         this.ct_chatRoom.roomerInfo.setListData(user);
+                        this.ct_chatRoom.users = user;
                         this.ct_chatRoom.CheckAdmin(user);
                         if (code == 1) {
                             ct_chatRoom.messages.append("### " + id + "님이 입장하셨습니다. ###\n");
@@ -453,6 +456,17 @@ public class ClientThread extends Thread
                         new SendFile(addr);
                         break;
                     }
+                    case YES_PASSADMIN:{
+                        String id = st.nextToken();
+                        int roomNumber = Integer.parseInt(st.nextToken());
+                        if (id.equals(this.ct_logonID)) {
+                            this.ct_chatRoom.isAdmin =true;
+                            if(this.ct_chatRoom.isAdmin){
+                                System.out.println("내가 방장이다 이새끼야:"+id);
+                            }
+                        }
+                        break;
+                    }
                     case YES_CHATBAN: {
                         String id = st.nextToken();
                         int roomNumber = Integer.parseInt(st.nextToken());
@@ -461,6 +475,7 @@ public class ClientThread extends Thread
                             if (id.equals(this.ct_logonID)) {
 
                                 this.ct_chatRoom.message.setText("채팅 금지");
+//                                this.ct_chatRoom.message.setFont(new Font(Color.red));
                                 this.ct_chatRoom.message.setEnabled(false);
                                 Timer timer = new Timer();
                                 TimerTask task = new TimerTask() {
@@ -560,6 +575,20 @@ public class ClientThread extends Thread
             this.send(this.ct_buffer.toString());
         } catch (IOException var3) {
             System.out.println(var3);
+        }
+    }
+    public void requestPassAdmin(String id){
+        System.out.println("다음 방장: "+id);
+        try{
+            ct_buffer.setLength(0);
+            ct_buffer.append(REQ_PASSADMIN);
+            ct_buffer.append(SEPARATOR);
+            ct_buffer.append(ct_roomNumber);
+            ct_buffer.append(SEPARATOR);
+            ct_buffer.append(id);
+            send(ct_buffer.toString());
+        }catch(IOException e){
+            System.out.println(e);
         }
     }
     public void requestEnterRoom(int roomNumber, String password){

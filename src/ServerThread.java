@@ -26,6 +26,7 @@ public class ServerThread extends Thread
     private static final int REQ_SENDFILE = 1061;
     private static final int REQ_CHATBAN = 1071;
     private static final int REQ_POPMESSAGE = 1081;
+    private static final int REQ_PASSADMIN = 1091;
     private static final int YES_LOGON = 2001;
     private static final int NO_LOGON = 2002;
     private static final int YES_CREATEROOM = 2011;
@@ -44,6 +45,9 @@ public class ServerThread extends Thread
     private static final int NO_CAHTBAN = 2072;
     private static final int YES_POPMESSAGE = 2081;
     private static final int NO_POPMESSAGE = 2082;
+
+
+    private static final int YES_PASSADMIN = 2091;
     private static final int MDY_WAITUSER = 2003;
     private static final int MDY_WAITINFO = 2013;
     private static final int MDY_ROOMUSER = 2023;
@@ -236,6 +240,32 @@ public class ServerThread extends Thread
                         } else {
                             modifyWaitRoom();
                             modifyRoomUser(roomNumber, id, 0);
+                        }
+                        break;
+                    }
+                    case REQ_PASSADMIN: {
+                        int roomNumber = Integer.parseInt(st.nextToken());
+                        String id = st.nextToken();
+
+                        Hashtable room = this.st_waitRoom.getClients(roomNumber);
+                        ServerThread client = null;
+                        if ((client = (ServerThread)room.get(id)) != null) {
+                            this.st_buffer.setLength(0);
+                            this.st_buffer.append(YES_PASSADMIN);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(id);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(this.st_roomNumber);
+
+                            client.send(this.st_buffer.toString());
+                        } else {
+                            this.st_buffer.setLength(0);
+                            this.st_buffer.append(NO_CAHTBAN);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(id);
+                            this.st_buffer.append("|");
+                            this.st_buffer.append(this.st_roomNumber);
+                            this.send(this.st_buffer.toString());
                         }
                         break;
                     }
